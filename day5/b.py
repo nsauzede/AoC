@@ -5,7 +5,7 @@ def pr(mat):
             else: print(c,end='')
         print('')
 def fun(fi):
-    print(f'file={fi}')
+    # print(f'file={fi}')
     f=open(fi)
     lines=[]
     dim = 0
@@ -20,17 +20,17 @@ def fun(fi):
         # print(f'li={li}')
         a,b,c,d=li
         # print(a,b,c,d)
-        if a==c or b==d:
-            # print(f'line={line}')
-            # li=[list(map(int,e)) for e in line]
-            m=max(li)
-            # if m==989:print(m, line)
-            if m>dim:dim=m
-            lines+=[li]
+        # if a==c or b==d:
+        # print(f'line={line}')
+        # li=[list(map(int,e)) for e in line]
+        m=max(li)
+        # if m==989:print(m, line)
+        if m>dim:dim=m
+        lines+=[li]
     # print(f'dim={dim}')
     dim+=1
-    print(f'nlines={nlines}')
-    print(f'lines={len(lines)}')
+    # print(f'nlines={nlines}')
+    # print(f'lines={len(lines)}')
     print(f'dim={dim}')
     mat=[[0]*dim for i in range(dim)]
     for li in lines:
@@ -42,11 +42,24 @@ def fun(fi):
             # print(f'len {len(mat),len(mat[0])}')
             for i in range(mi,ma+1):
                 mat[i][a]+=1
-        else:
+        elif b==d:
             mi,ma=min(a,c),max(a,c)
             # print(mi,ma)
             for i in range(mi,ma+1):
                 mat[b][i]+=1
+        else:
+            # print(f'li={li}')
+            dx=1;dy=1
+            if a>c:dx=-1
+            if b>d:dy=-1
+            # print(f'dx={dx} dy={dy}')
+            while True:
+                if a>=dim or b>=dim:break
+                if a<0 or b<0:break
+                mat[b][a]+=1
+                if a==c and b==d:break
+                a+=dx
+                b+=dy
         # pr(mat)
     danger=0
     for j in range(dim):
@@ -60,5 +73,6 @@ def fun(fi):
 l=['input']
 for f in l:
     fun(f)
-# wrong answer 5770 too high
-# good answer 5585
+# wrong answer 17170 too low
+# wrong answer 19754 too high
+# good answer 1793
