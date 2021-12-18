@@ -6,7 +6,7 @@ rules={}
 for l in lines:
     a,b=l.split(' -> ')
     rules[a]=b
-print(f'rules={rules}')
+# print(f'rules={rules}')
 print(f'Template: {template}')
 for step in range(10):
     s=''
@@ -18,7 +18,6 @@ for step in range(10):
         s+=template[i]+c
     s+=template[i+1]
     template=s
-    b,c,h,n=template.count('B'),template.count('C'),template.count('H'),template.count('N')
     counts={}
     for c in template:
         if c not in counts:
@@ -34,5 +33,6 @@ for step in range(10):
     ma=counts[kma]
     mi=counts[kmi]
     # print(f'ma={ma} mi={mi}')
-    print(f'After step {step+1}: {template} ({len(template)}, B={b}, C={c}, H={h}, N={n}, delta={ma-mi})')
+    b,c,h,n=template.count('B'),template.count('C'),template.count('H'),template.count('N')
+    print(f'After step {step+1}: ({len(template)}, B={b}, C={c}, H={h}, N={n}, delta={ma-mi})')
 #1030 too low
