@@ -65,3 +65,5 @@ for i in range(n):
     print(f'nlit={nl}')
 # for n in [0,10,20,30,34,40,50,60,70]:
 #     print(f'c[{n}={enh[n]}')
+
+# 5186 too high
