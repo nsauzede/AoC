@@ -1,4 +1,4 @@
-# aoc21
-Advent Of Code 2021
+# aoc
+Advent Of Code
 
 My solutions
