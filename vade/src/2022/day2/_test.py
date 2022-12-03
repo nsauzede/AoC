@@ -76,7 +76,7 @@ res0 = 15
 res1 = 12740
 res0_2 = 12
 res1_2 = 11980
-class T(unittest.TestCase):
+class T0(unittest.TestCase):
     def test_play_A_X(self):
         self.assertEqual(SCISSOR, play(ROCK,LOOSE))
     def test_play_B_X(self):
@@ -115,6 +115,7 @@ class T(unittest.TestCase):
     def test_score0_3_3(self):
         self.assertEqual(6, score0(3,3))#draw
 
+class T(unittest.TestCase):
     def test_inp0ReturnsRes0(self):
         inp0=load("input0")
         self.assertEqual(res0, run1(inp0))

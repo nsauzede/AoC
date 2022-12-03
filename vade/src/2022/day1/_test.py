@@ -10,7 +10,7 @@ def run(inp:str, top=1)->int:
         count+=int(l)
     totals+=[count]
     max=sum(sorted(totals,reverse=True)[0:top])
-    print(f"max={max}")
+    #print(f"max={max}")
     return max
 
 import unittest
