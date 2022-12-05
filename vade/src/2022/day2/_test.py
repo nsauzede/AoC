@@ -4,8 +4,7 @@ SCISSOR='C'
 LOOSE='X'
 DRAWS='Y'
 WIN='Z'
-def score0(l:int,r:int)->int:
-    # you play r
+def score0(l:int,r:int)->int:    # you play r
     score=0
     if l==1:
         if r==1:score+=3#draw
@@ -33,11 +32,8 @@ def score(l:int,r:int)->int:
 def run1(inp:str)->int:
     s=0
     for l in inp.splitlines():
-        #print(f"l={l}")
         l,r=l.split(" ")
-        #print(f"l={l} r={r}")
         s+=score(l,r)
-        #print(f"score={score}")
     return s
 
 # 1 Rock 2 Paper 3 Scissor
@@ -61,11 +57,8 @@ def play(l:str,r:str)->str:
 def run2(inp:str)->int:
     s=0
     for l in inp.splitlines():
-        #print(f"l={l}")
         l,r=l.split(" ")
-        #print(f"l={l} r={r}")
         s+=score(l,play(l,r))
-        #print(f"score={score}")
     return s
 
 import unittest

@@ -2,7 +2,6 @@ def run(inp:str, top=1)->int:
     count=0
     totals=[]
     for l in inp.splitlines():
-        #print(f"l={l}")
         if l == "":
             totals+=[count]
             count = 0
@@ -10,7 +9,6 @@ def run(inp:str, top=1)->int:
         count+=int(l)
     totals+=[count]
     max=sum(sorted(totals,reverse=True)[0:top])
-    #print(f"max={max}")
     return max
 
 import unittest

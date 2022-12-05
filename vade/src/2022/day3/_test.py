@@ -19,11 +19,8 @@ def spl(s:str)->int:
 def run1(inp:str)->int:
     s=0
     for l in inp.splitlines():
-        #print(f"l={l}")
         l,r=spl(l)
-        #print(f"l={l} r={r}")
         s+=prio(common(l,r))
-        #print(f"score={score}")
     return s
 
 def run2(inp:str)->int:
@@ -34,10 +31,8 @@ def run2(inp:str)->int:
         lines+=[l]
         n+=1
         if n<3:continue
-        #print(f"lines={lines}")
         c1="".join(commons(lines[0],lines[1]))
         c2="".join(commons(lines[1],lines[2]))
-        #print(f"c1={c1} c2={c2}")
         s+=prio(common(c1,c2))
         lines=[]
         n=0
@@ -79,7 +74,6 @@ class T0(unittest.TestCase):
         c2="".join(commons("ttgJtRGJQctTZtZT","CrZsJsPPZsGzwwsLwLmpwMDw"))
         self.assertEqual('Z', common(c1,c2))
 
-#class T(object):
 class T(unittest.TestCase):
     def test_inp0ReturnsRes0(self):
         inp0=load("input0")
