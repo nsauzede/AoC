@@ -12,10 +12,7 @@ def run(inp:str, top=1)->int:
     return max
 
 import unittest
-
-def load(name)->str:
-    f=open(name,"rt")
-    return f.read()
+def load(name):return open(name,"rt").read()
 res0 = 24000
 res1 = 67016
 res0_2 = 45000

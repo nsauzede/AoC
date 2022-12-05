@@ -49,9 +49,7 @@ def run1(inp:str, preserve=False)->int:
     return gettop(stacks)
 
 import unittest
-def load(name)->str:
-    f=open(name,"rt")
-    return f.read()
+def load(name):return open(name,"rt").read()
 res0 = "CMZ"
 res1 = "ZRLJGSCTR"
 res0_2 = "MCD"
@@ -66,6 +64,9 @@ class T(unittest.TestCase):
     def test_inp0ReturnsRes0(self):
         inp0=load("input0")
         self.assertEqual(res0, run1(inp0))
+    def test_inpReturnsRes1(self):
+        inp1=load("input1")
+        self.assertEqual(res1, run1(inp1))
     def test_inp0ReturnsRes0_2(self):
         inp0=load("input0")
         self.assertEqual(res0_2, run1(inp0, True))

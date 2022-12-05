@@ -31,9 +31,7 @@ def run1(inp:str, strict=True)->int:
     return s
 
 import unittest
-def load(name)->str:
-    f=open(name,"rt")
-    return f.read()
+def load(name):return open(name,"rt").read()
 res0 = 2
 res1 = 547
 res0_2 = 4
