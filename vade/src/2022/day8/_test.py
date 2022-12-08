@@ -1,10 +1,8 @@
 def parse(inp:str)->dict:
     m=[]
     for l in inp.splitlines():
-        #print(f"l={l}")
         t=[]
         for c in l:
-            #print(f"{c}")
             t+=[c]
         m+=[t]
     return m
@@ -20,7 +18,6 @@ def calc(m:list)->int:
         for i in range(cols-2):
             i+=1
             e=m[j][i]
-            print(f"[{e}]",end='')
             visible=True
             for y in range(rows):
                 if y==j:
@@ -31,13 +28,11 @@ def calc(m:list)->int:
                         continue
                 if not visible:
                     continue
-                print(f"{m[y][i]}",end='')
                 if m[y][i] >= e:
-                    print(f"y",end='')
                     visible=False
                     continue
                 else:
-                    print(f"Y",end='')
+                    pass
             if visible:
                 n+=1
                 continue
@@ -51,92 +46,51 @@ def calc(m:list)->int:
                         continue
                 if not visible:
                     continue
-                print(f"{m[j][x]}",end='')
                 if m[j][x] >= e:
-                    print(f"x",end='')
                     visible=False
                     continue
                 else:
-                    print(f"X",end='')
+                    pass
             if visible:
                 n+=1
                 continue
-        print(f" n={n}")
     return n+rows*2+(cols-2)*2
 
+def vert_vis(m:list, i:int, e:int, rng:range)->int:
+    visible=True
+    vis=0
+    for y in rng:
+        if not visible:
+            break
+        vis+=1
+        if m[y][i] >= e:
+            visible=False
+            break
+    return vis
+
+def hori_vis(m:list, j:int, e:int, rng:range)->int:
+    visible=True
+    vis=0
+    for x in rng:
+        if not visible:
+            break
+        vis+=1
+        if m[j][x] >= e:
+            visible=False
+            break
+    return vis
+
 def calc2_(m:list,j,i)->int:
-    #print(f"m={m}")
     if len(m) < 3 or len(m[0]) < 3:
         return -1
     n=1
     rows=len(m)
     cols=len(m[0])
     e=m[j][i]
-    #print(f"[{e}]",end='')
-    visible=True
-    vis=0
-    for y in range(j-1,-1,-1):
-        if not visible:
-            break
-        vis+=1
-        #print(f"{m[y][i]}",end='')
-        if m[y][i] >= e:
-            #print(f"y",end='')
-            visible=False
-            break
-        else:
-            #print(f"Y",end='')
-            pass
-    n*=vis
-    #print(f" n={n} ",end='')
-    visible=True
-    vis=0
-    for y in range(j+1,rows):
-        if not visible:
-            break
-        vis+=1
-        #print(f"{m[y][i]}",end='')
-        if m[y][i] >= e:
-            #print(f"y",end='')
-            visible=False
-            break
-        else:
-            #print(f"Y",end='')
-            pass
-    n*=vis
-    #print(f" n={n} ",end='')
-    visible=True
-    vis=0
-    for x in range(i-1,-1,-1):
-        if not visible:
-            break
-        vis+=1
-        #print(f"{m[j][x]}",end='')
-        if m[j][x] >= e:
-            #print(f"x",end='')
-            visible=False
-            break
-        else:
-            #print(f"X",end='')
-            pass
-    n*=vis
-    #print(f" n={n} ",end='')
-    visible=True
-    vis=0
-    for x in range(i+1,cols):
-        if not visible:
-            break
-        vis+=1
-        #print(f"{m[j][x]}",end='')
-        if m[j][x] >= e:
-            #print(f"x",end='')
-            visible=False
-            break
-        else:
-            #print(f"X",end='')
-            pass
-    n*=vis
-    #print(f" n={n} ",end='')
+    n*=vert_vis(m, i, e, range(j-1,-1,-1))
+    n*=vert_vis(m, i, e, range(j+1,rows))
+    n*=hori_vis(m, j, e, range(i-1,-1,-1))
+    n*=hori_vis(m, j, e, range(i+1,cols))
     return n
 
 def calc2(m:list)->int:
@@ -172,7 +126,6 @@ res1 = 1672
 res0_2 = 8
 res1_2 = 327180
 class T1(unittest.TestCase):
-#class T1():
     def test_1(self):
         self.assertEqual(-1, calc([]))
     def test_2(self):
@@ -184,7 +137,6 @@ class T1(unittest.TestCase):
         inp1=load("input1")
         self.assertEqual(res1, run1(inp1))
 class T2(unittest.TestCase):
-#class T2():
     def test_020(self):
         inp0=load("input0")
         self.assertEqual(4, calc2_(parse(inp0),1,2))
