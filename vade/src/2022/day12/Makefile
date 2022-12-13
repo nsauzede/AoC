@@ -1,4 +1,3 @@
-
 DAY:=12
 all: input1
 

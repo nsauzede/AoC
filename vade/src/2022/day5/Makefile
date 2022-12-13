@@ -1,4 +1,4 @@
-DAY:=8
+DAY:=5
 all: input1
 
 input1:

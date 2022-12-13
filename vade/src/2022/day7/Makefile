@@ -1,6 +1,5 @@
-
-
+DAY:=7
 all: input1
 
 input1:
-	aoc download --day 7 --input-file input1
+	aoc download --day $(DAY) --input-file input1
