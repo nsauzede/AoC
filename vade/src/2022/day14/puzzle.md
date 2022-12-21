@@ -148,8 +148,6 @@ Using your scan, simulate the falling sand. *How many units of sand come to rest
 
 Your puzzle answer was `1068`.
 
-The first half of this puzzle is complete! It provides one gold star: \*
-
 \--- Part Two ---
 ----------
 
@@ -195,8 +193,12 @@ To find somewhere safe to stand, you'll need to simulate falling sand until a un
 
 Using your scan, simulate the falling sand until the source of the sand becomes blocked. *How many units of sand come to rest?*
 
-Answer:
+Your puzzle answer was `27936`.
 
-Although it hasn't changed, you can still [get your puzzle input](14/input).
+Both parts of this puzzle are complete! They provide two gold stars: \*\*
 
-You can also [Shareon [Twitter](https://twitter.com/intent/tweet?text=I%27ve+completed+Part+One+of+%22Regolith+Reservoir%22+%2D+Day+14+%2D+Advent+of+Code+2022&url=https%3A%2F%2Fadventofcode%2Ecom%2F2022%2Fday%2F14&related=ericwastl&hashtags=AdventOfCode) [Mastodon](javascript:void(0);)] this puzzle.
+At this point, you should [return to your Advent calendar](/2022) and try another puzzle.
+
+If you still want to see it, you can [get your puzzle input](14/input).
+
+You can also [Shareon [Twitter](https://twitter.com/intent/tweet?text=I%27ve+completed+%22Regolith+Reservoir%22+%2D+Day+14+%2D+Advent+of+Code+2022&url=https%3A%2F%2Fadventofcode%2Ecom%2F2022%2Fday%2F14&related=ericwastl&hashtags=AdventOfCode) [Mastodon](javascript:void(0);)] this puzzle.
