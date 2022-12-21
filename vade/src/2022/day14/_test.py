@@ -1,17 +1,3 @@
-def mkmat(row=[1,2,3],count=3)->list:
-    mat=[]
-    for i in range(count):mat+=[row.copy()]
-    return mat
-
-ofs_x=494
-
-import unittest
-def load(name):return open(name,"rt").read()
-def attrs(c:object,names:list)->dict:return dict({k: v for k, v in vars(c).items() if k in names})
-res0 = 24
-res1 = 1068
-res0_2 = 93
-res1_2 = 0
 def mapstr(m:list)->str:return "\n".join(["".join(str(i) for i in sublist) for sublist in m])+"\n"
 def strmap(inp:str)->list:
     #l=[s for s in inp.split("\n")]
@@ -50,20 +36,26 @@ def flow(m:list,p:list)->list:
                 return [x,y]
             raise Exception(f"Kaboom x+1,y+1 c={c}")
     raise Exception(f"Kaboom x,y+1 c={c}")
-def source(m:list,src='+')->list:return [[l.index(src),i] for i,l in enumerate(m) if src in l][0]
+def source(m:list,src='+')->list:
+    return [[l.index(src),i] for i,l in enumerate(m) if src in l][0]
 # compute drop of sand unit until it rests, or free fall
 # if p input not provided (or None) then search for '+' in m
 # if output is either x<0 or x>=w or y>=h => free fall
 # if rest => update m at output p to be 'o'
 def drop(m:list,p=None)->list:
     w,h=len(m[0]),len(m)
-    if p==None:p=source(m)
+    try:
+        if p==None:p=source(m)
+    except:
+        return [-1,0]
     while True:
         p0=p
         p=flow(m,p)
         x,y=p
         if p==p0:                       # rest
             m[y][x]='o'
+            if y==0:
+                print(f"WE REACHED Y==0!!! X={x}")
             return p
         if y>=h or x<0 or x>=w:         # free fall
             return p
@@ -78,7 +70,7 @@ def pour(m:list)->int:
         n+=1
     return n
 
-def scan(m:list, s:str):
+def scan(m:list, s:str, bedrock=False)->int:
     for l in s.splitlines():
         path = [eval(x) for x in l.split(" -> ")]
         p0 = path[0]
@@ -105,20 +97,79 @@ def scan(m:list, s:str):
                 if x>mx:mx=x
                 if y>my:my=y
             p0 = p
-    print(f"mx={mx} my={my}")
+    br=my+2
+    print(f"mx={mx} my={my} br={br}")
+    if bedrock:
+        for x in range(len(m[0])):
+            m[br][x]='#'
+    return br
 
-class TestPourInPart1WithInput1(unittest.TestCase):
+def mkmat(row=[1,2,3],count=3)->list:
+    mat=[]
+    for i in range(count):mat+=[row.copy()]
+    return mat
+def load(name):return open(name,"rt").read()
+def attrs(c:object,names:list)->dict:return dict({k: v for k, v in vars(c).items() if k in names})
+
+import unittest
+res0 = 24
+res1 = 1068
+res0_2 = 93
+res1_2 = 0
+
+#@unittest.skip
+class TestPourWithInput1InPart2(unittest.TestCase):
+# W=600 => 1470 too low
+# W=800 => 23773 too low
+    def test_pour(self):
+        m=mkmat(['.']*900,200)
+        m[0][500]='+'
+        inp=load('input1')
+        scan(m,inp, bedrock=True)
+        n=pour(m)
+        self.assertEqual(res0_2+10000*0,n)
+
+class TestPourWithInput0InPart2(unittest.TestCase):
     def test_pour(self):
         m=mkmat(['.']*600,200)
         m[0][500]='+'
-        #draw(m)
+        inp=load('input0')
+        scan(m,inp, bedrock=True)
+        n=pour(m)
+        self.assertEqual(res0_2+10000*0,n)
+
+class TestBedrock(unittest.TestCase):
+    def test_bedrock(self):
+        m=mkmat(['.']*600,200)
+        m[0][500]='+'
+        inp=load('input0')
+        br=scan(m,inp, bedrock=True)
+        self.assertEqual('#', m[br][0])
+        self.assertEqual('#', m[br][len(m[0])-1])
+
+class TestOverflowSource(unittest.TestCase):
+    def test_overflowSource(self):
+        m=[['.','.','+','.','.'],['.','.','.','.','.'],['#','#','#','#','#']]
+        p=drop(m)
+        draw(m)
+        p=drop(m)
+        draw(m)
+        p=drop(m)
+        draw(m)
+        p=drop(m)
+        draw(m)
+        self.assertEqual([2,0],p)
+
+class TestPourWithInput1InPart1(unittest.TestCase):
+    def test_pour(self):
+        m=mkmat(['.']*600,200)
+        m[0][500]='+'
         inp=load('input1')
         scan(m,inp)
-        #draw(m)
         n=pour(m)
         self.assertEqual(res1+10000*0,n)
 
-class TestPourInPart1WithInput0(unittest.TestCase):
+class TestPourWithInput0InPart1(unittest.TestCase):
     def test_pour(self):
         m=mkmat(['.']*600,200)
         m[0][500]='+'
