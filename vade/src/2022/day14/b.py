@@ -36,65 +36,99 @@ def box(d:dict)->tuple:#returns box comprising walls plus dropsource at (500,0)
         if y<y1:y1=y
         if y>y2:y2=y
     return x1,y1,x2,y2
-def flow(d:dict,p0:tuple,b=None,bedrock=False)->tuple:
+def flow(d:dict,p0:tuple,b=None)->tuple:
     if b==None:b=box(d)
     x1,y1,x2,y2=b
     x,y=p0
-    if bedrock:
-        if y==y2+1:return p0
     p=(x,y+1)
     if p not in d:# straight flow
         return p
     p=(x-1,y+1)
-    if not bedrock:
-        if x==x1:#free fall left
-            return p
+    if x==x1:#free fall left
+        return p
     if p not in d:# diag left
         return p
     p=(x+1,y+1)
-    if not bedrock:
-        if x+1>x2:#free fall right
-            return p
+    if x+1>x2:#free fall right
+        return p
     if p not in d:#diag right
         return p
     return p0 # rest
-def drop(d:dict,b=None,bedrock=False,p=(500,0))->tuple:
+def drop(d:dict,b=None,p=(500,0))->tuple:
     if b==None:b=box(d)
     x1,y1,x2,y2=b
     while True:
         p0=p
-        p=flow(d,p,b,bedrock)
+        p=flow(d,p,b)
         x,y=p
         if p==p0:#rest
             d[p]='o'
+            if y==0:print(f"WE REACHED Y==0!!! X={x}")
             return p
-        if not bedrock:
-            if y>y2 or x<x1 or x>x2:#free fall
-                return p
+        if y>y2 or x<x1 or x>x2:#free fall
+            return p
     return 0,0
-def pour(d:dict,bedrock=False)->int:
+def pour(d:dict)->int:
     b=box(d)
     x1,y1,x2,y2=b
     n=0
     while True:
-        p=drop(d,b,bedrock)
+        p=drop(d,b)
         x,y=p
-        if bedrock:
-            if y==0:break
-        else:
-            if y>y2 or x<x1 or x>x2:break
+        if y>y2 or x<x1 or x>x2:
+            break
         n+=1
-    if bedrock:n+=1
     return n
-
-import unittest
+def flow2(d:dict,p0:tuple,b=None)->tuple:
+    if b==None:b=box(d)
+    x1,y1,x2,y2=b
+    x,y=p0
+    if y==y2+1:#bedrock
+        return p0
+    p=(x,y+1)
+    if p not in d:# straight flow
+        return p
+    p=(x-1,y+1)
+    if p not in d:# diag left
+        return p
+    p=(x+1,y+1)
+    if p not in d:#diag right
+        return p
+    return p0 # rest
+def drop2(d:dict,b=None,p=(500,0))->tuple:
+    if b==None:b=box(d)
+    x1,y1,x2,y2=b
+    while True:
+        p0=p
+        p=flow2(d,p,b)
+        x,y=p
+        if p==p0:#rest
+            d[p]='o'
+            return p
+    return 0,0
+def pour2(d:dict)->int:
+    b=box(d)
+    x1,y1,x2,y2=b
+    n=1
+    while True:
+        p=drop2(d,b)
+        x,y=p
+        if y==0:
+            break
+        n+=1
+    return n
 res0 = 24
 res1 = 1068
 res0_2 = 93
 res1_2 = 27936
-
+import unittest
 #@unittest.skip
 class T000(unittest.TestCase):
+    def test_000(self):
+        l=parse(inp00s)
+        self.assertEqual([[[498,4],[498,6],[496,6]],[[503,4],[502,4],[502,9],[494,9]]],l)
+        self.assertEqual(res00,scan(l))
+        self.assertEqual(res00,scan(parse(load("input0"))))
     def test_100(self):
         d=scan(parse(load("input0")))
         self.assertEqual((494,0,503,9),box(d))
@@ -108,7 +142,18 @@ class T000(unittest.TestCase):
         self.assertEqual(res1,pour(d))
     def test_200(self):
         d=scan(parse(load("input0")))
-        self.assertEqual(res0_2,pour(d,bedrock=True))
+        self.assertEqual(res0_2,pour2(d))
     def test_210(self):
         d=scan(parse(load("input1")))
-        self.assertEqual(res1_2,pour(d,bedrock=True))
+        self.assertEqual(res1_2,pour2(d))
+inp00s="""498,4 -> 498,6 -> 496,6
+503,4 -> 502,4 -> 502,9 -> 494,9
+"""
+res00={
+                        (498,4):'#',       (502,4):'#',(503,4):'#',
+                        (498,5):'#',       (502,5):'#',
+(496,6):'#',(497,6):'#',(498,6):'#',       (502,6):'#',
+                                           (502,7):'#',
+                                           (502,8):'#',
+(494,9):'#',(495,9):'#',(496,9):'#',(497,9):'#',(498,9):'#',(499,9):'#',(500,9):'#',(501,9):'#',(502,9):'#',
+}
