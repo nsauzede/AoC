@@ -136,8 +136,6 @@ def mkrope(k:list,c:int)->list:
 class T1(unittest.TestCase):
     def test_10(self):
         self.assertEqual([0,3,0,-5,0], parse(m0))
-    def Ztest_20(self):
-        self.assertEqual(res00, calc(parse(m0)))
     def test_50(self):
         inp0=load("input0")
         self.assertEqual(res0, run1(inp0))

@@ -93,7 +93,6 @@ def mkmat(row=[1,2,3],count=3)->list:
     return mat
 def load(name):return open(name,"rt").read()
 import unittest
-class Zunittest:TestCase=object
 res0=13
 res1=5735
 res0_2=1
