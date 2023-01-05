@@ -134,9 +134,7 @@ res00 = 10
 res0 = 64
 res1 = 4580
 res0_2 = 58
-res1_2 = 0
-# res1_2=3650 is not right
-# ch returns 2610
+res1_2 = 2610
 import unittest
 #@unittest.skip
 class T000(unittest.TestCase):
