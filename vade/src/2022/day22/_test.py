@@ -1,0 +1,233 @@
+R=0;D=1;L=2;U=3
+def load(name):return open(name,"rt").read()
+def parse(s:str)->tuple:
+    m={};p=[]
+    ispath=False
+    y=1
+    for line in s.splitlines():
+        if not ispath:
+            if line=='':
+                ispath=True
+                continue
+            x=1
+            for c in line:
+                if c==' ':
+                    pass
+                elif c=='.' or '#':
+                    m[(x,y)]=c
+                else:
+                    raise Exception(f"Unknown char '{c}'")
+                x+=1
+            y+=1
+        else:
+            aprint(f"line={line}")
+            l=line.split("R")
+            l1=[i for s in list(zip(l,[R]*len(l))) for i in s][:-1]
+            aprint(f"l1={l1}")
+            for e in l1:
+                if 'L' in str(e):
+                    l2=e.split('L')
+                    aprint(f"l2={l2}")
+                    p+=[int(i) for s in list(zip(l2,[L]*len(l2))) for i in s][:-1]
+                else:
+                    aprint(f"e={e}")
+                    p+=[int(e)]
+            break
+    return m,p
+def fparse(name):return parse(load(name))
+def wrap_right(m:dict,p:tuple)->tuple:
+    x,y=p
+    while (x,y) in m:x-=1
+    return (x+1,y)
+def wrap_left(m:dict,p:tuple)->tuple:
+    x,y=p
+    while (x,y) in m:x+=1
+    return (x-1,y)
+def wrap_down(m:dict,p:tuple)->tuple:
+    x,y=p
+    while (x,y) in m:y-=1
+    return (x,y+1)
+def wrap_up(m:dict,p:tuple)->tuple:
+    x,y=p
+    while (x,y) in m:y+=1
+    return (x,y-1)
+def orig(m:dict)->tuple:
+    y=1;x=1
+    while True:
+        if (x,y) in m:
+            break
+        x+=1
+    return x,y
+def rotate(facing:int,turn:int)->int:
+    if facing==R:return D if turn==R else U
+    if facing==D:return L if turn==R else R
+    if facing==U:return R if turn==R else L
+    if facing==L:return U if turn==R else D
+    else:
+        raise Exception(f"Kaboom facing={facing} turn={turn}")
+def walk(m:dict,o:tuple,facing:int,n:int,d={})->tuple:
+    x,y=o
+    aprint(f"Walking n={n} from o={o} with facing={facing}")
+    while n>0:
+        if facing==R:
+            d[(x,y)]='>'
+            if (x+1,y) in m:
+                if m[(x+1,y)]!='.':break
+                x+=1
+            else:
+                np=wrap_right(m,(x,y))
+                if m[np]!='.':break
+                x,y=np
+        elif facing==L:
+            d[(x,y)]='<'
+            if (x-1,y) in m:
+                if m[(x-1,y)]!='.':break
+                x-=1
+            else:
+                np=wrap_left(m,(x,y))
+                if m[np]!='.':break
+                x,y=np
+        elif facing==D:
+            d[(x,y)]='v'
+            if (x,y+1) in m:
+                if m[(x,y+1)]!='.':break
+                y+=1
+            else:
+                np=wrap_down(m,(x,y))
+                if m[np]!='.':break
+                x,y=np
+        elif facing==U:
+            d[(x,y)]='^'
+            if (x,y-1) in m:
+                if m[(x,y-1)]!='.':break
+                y-=1
+            else:
+                np=wrap_up(m,(x,y))
+                if m[np]!='.':break
+                x,y=np
+        else:raise Exception(f"Kaboom facing={facing}")
+        n-=1
+    return x,y
+def box(d:dict)->tuple:
+    INF=999999999
+    x1=INF;y1=INF
+    x2=-INF;y2=-INF
+    for e in d:
+        x,y=e
+        if x<x1:x1=x
+        if x>x2:x2=x
+        if y<y1:y1=y
+        if y>y2:y2=y
+    return x1,y1,x2,y2
+def draw(d:dict):
+    aprint(f"d={d}")
+    aprint(f"box={box(d)}")
+    x1,y1,x2,y2=box(d)
+    print('')
+    for y in range(y1,y2+1):
+        for x in range(x1,x2+1):
+            p=(x,y)
+            if p not in d:print(' ',end='');continue
+            print(d[p],end='')
+        print('')
+def wander(m:dict,p:list,o=None,facing=R)->(tuple,int):
+    if o==None:o=orig(m)
+    d={}
+    for k,v in m.items():
+        d[k]=v
+    o=walk(m,o,facing,p.pop(0),d)
+    aprint(f"o={o}")
+    while len(p)>0:
+        facing=rotate(facing,p.pop(0))
+        aprint(f"Popped facing={facing}")
+        aprint(f"facing={facing}")
+        o=walk(m,o,facing,p.pop(0),d)
+        aprint(f"o={o}")
+    draw(d)
+    return o,facing
+def encode(o:tuple,facing:int)->int:
+    x,y=o
+    return y*1000+x*4+facing
+verbose=False
+def aprint(s:str):
+    if verbose:
+        print(s)
+res0 = 6032
+res1 = 43466
+res0_2 = 0
+res1_2 = 0
+import unittest
+#@unittest.skip
+class T010(unittest.TestCase):
+    def test_000(self):
+        m,p=parse(inp000s)
+        self.assertEqual((2,1),orig(m))
+    def test_001_walks(self):
+        m,p=parse(inp000s)
+        self.assertEqual((3,1),walk(m,(2,1),R,3))
+        self.assertEqual((2,2),walk(m,(2,1),D,3))
+    def test_002_wander(self):
+        m,p=parse(inp000s)
+        self.assertEqual(((2,2),R),wander(m,p))
+    def test_003_wander(self):
+        m,p=fparse("input0")
+        o,facing=wander(m,p)
+        self.assertEqual(((8,6),R),(o,facing))
+    def test_100_wander(self):
+        m,p=fparse("input0")
+        o,facing=wander(m,p)
+        #print(f"o={o} facing={facing}")
+        self.assertEqual(res0,encode(o,facing))
+    def test_110_wander(self):
+        m,p=fparse("input1")
+        o=orig(m)
+        aprint(f"p={p} o={o}")
+        self.assertEqual((51,1),o)
+        o,facing=wander(m,p)
+        #print(f"o={o} facing={facing}")
+        self.assertEqual(res1,encode(o,facing))
+#@unittest.skip
+class T000(unittest.TestCase):
+    def test_000(self):
+        m,p=parse(inp000s)
+        self.assertEqual((inp000m,inp000p),(m,p))
+    def test_010_wrap_right(self):
+        m,p=parse(inp000s)
+        self.assertEqual((1,2),wrap_right(m,(2,2)))
+    def test_011_wrap_left(self):
+        m,p=parse(inp000s)
+        self.assertEqual((3,1),wrap_left(m,(2,1)))
+    def test_012_wrap_down(self):
+        m,p=parse(inp000s)
+        self.assertEqual((2,1),wrap_down(m,(2,2)))
+    def test_012_wrap_up(self):
+        m,p=parse(inp000s)
+        self.assertEqual((2,2),wrap_up(m,(2,1)))
+
+inp000s="""\
+ ..
+#.
+
+10R5L5
+"""
+inp000m={
+(2,1):'.',(3,1):'.',
+(1,2):'#',(2,2):'.',
+}
+inp000p=[10,R,5,L,5]
+inp00s="""\
+        ...#
+        .#..
+        #...
+        ....
+...#.......#
+........#...
+..#....#....
+..........#.
+        ...#....
+        .....#..
+        .#......
+        ......#.
+
+10R5L5R10L4R5L5
+"""
