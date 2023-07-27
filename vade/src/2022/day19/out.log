@@ -1,0 +1,32 @@
+make[1]: *** No rule to make target 'vade/target/bin/2022/day19/libday19.so'.  Stop.
+	RUNPY	./vade/src/2022/day19/_test.py
+============================= test session starts ==============================
+platform linux -- Python 3.10.8, pytest-7.2.0, pluggy-1.0.0 -- /usr/bin/python
+cachedir: .pytest_cache
+rootdir: /mnt/data/perso/git/AoC/vade/src/2022/day19
+plugins: typeguard-2.13.3
+collecting ... collected 3 items
+
+_test.py::T000::test_010_blueprint1 PASSED
+_test.py::T000::test_011_blueprint2 FAILED
+_test.py::T000::test_111_sweep_blueprint1 Found max=9 for combo (2, 4, 0, 0)
+PASSED
+
+=================================== FAILURES ===================================
+___________________________ T000.test_011_blueprint2 ___________________________
+
+self = <_test.T000 testMethod=test_011_blueprint2>
+
+    def test_011_blueprint2(self):
+        g=Game()
+        verbose=True
+        res=g.blueprint(inp00[2], {'obs_lt':4, 'clay_lt':4, 'clay_obs_gt':0, 'ore_lt':2})
+>       self.assertEqual(res00_2,res)
+E       AssertionError: 12 != 9
+
+_test.py:115: AssertionError
+=========================== short test summary info ============================
+FAILED _test.py::T000::test_011_blueprint2 - AssertionError: 12 != 9
+========================= 1 failed, 2 passed in 0.51s ==========================
+make[1]: *** [/mnt/data/perso/git/ns_vade/Makefile:397: vade/src/2022/day19/_test.py/RUNPY] Error 1
+make: *** [/mnt/data/perso/git/ns_vade/bin/../Makefile:408: test] Error 2
