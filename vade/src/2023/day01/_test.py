@@ -19,13 +19,10 @@ res2=54980      # must always keep last letter to begin a new word ? [sigh]
 def calc01(inp:list)->list:
     print(inp)
     res = []
-    print(f"inp={inp}")
     for s in inp:
         num0=""
         num1=""
-        print(f"s={s}")
         for c in s:
-            #print(f"c={c}")
             if c.isdigit():
                 if num0=="":
                     num0 = c
@@ -34,7 +31,6 @@ def calc01(inp:list)->list:
         if num1=="":
             num1 = num0
         res += [int(num0+num1)]
-    print(f"res={res}")
     return res
 def puz01(inp:str)->int:
     l=inp.splitlines()
@@ -73,7 +69,6 @@ def calc02(inp:list)->list:
         if num1=="":
             num1 = num0
         res0 = int(num0+num1)
-        print(f"res0={res0}")
         res += [res0]
     return res
 def puz02(inp:str)->int:

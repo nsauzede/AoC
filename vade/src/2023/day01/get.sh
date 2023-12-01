@@ -1,3 +1,1 @@
-make -f ../../Makefile && \
-pytest _test.py
-
+make -f ../../Makefile
