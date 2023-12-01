@@ -54,9 +54,9 @@ mod tests {
         assert_eq!(34, result);
     }
     const INP01:&str = r#"1abc2
-pqr3stu8vwx
-a1b2c3d4e5f
-treb7uchet"#;
+        pqr3stu8vwx
+        a1b2c3d4e5f
+        treb7uchet"#;
     const RES01:u32 = 142;
     const INP1:&str = "../../input1";
     const RES1:u32 = 55816;
@@ -82,13 +82,12 @@ treb7uchet"#;
         assert_eq!(23, result);
     }
     const INP02:&str = r#"two1nine
-eightwothree
-abcone2threexyz
-xtwone3four
-4nineeightseven2
-zoneight234
-7pqrstsixteen
-"#;
+        eightwothree
+        abcone2threexyz
+        xtwone3four
+        4nineeightseven2
+        zoneight234
+        7pqrstsixteen"#;
     const RES02:u32 = 281;
     const INP2:&str = "../../input1";
     const RES2:u32 = 54980;
