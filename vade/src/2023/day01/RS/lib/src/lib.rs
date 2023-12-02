@@ -9,24 +9,26 @@ mod tests {
             for c in text.chars() {
                 if let Some(digit) = c.to_digit(10) {
                     word.clear();
-                    if first==0 {
+                    if first == 0 {
                         first = digit
                     } else {
                         second = digit
                     }
-                } else if part==1 {
+                } else if part == 1 {
                     word.push(c);
-                    let words = vec!["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
+                    let words = vec![
+                        "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+                    ];
                     for (i, _) in word.char_indices() {
                         if let Some(index) = words.iter().position(|&x| x == &word[i..]) {
-                            if first==0 {
+                            if first == 0 {
                                 first = index as u32 + 1
                             } else {
                                 second = index as u32 + 1
                             }
                             word.clear();
                             word.push(c);
-                            break
+                            break;
                         }
                     }
                 }
@@ -53,13 +55,13 @@ mod tests {
         let result = compute(0, "z3x4t");
         assert_eq!(34, result);
     }
-    const INP01:&str = r#"1abc2
+    const INP01: &str = r#"1abc2
         pqr3stu8vwx
         a1b2c3d4e5f
         treb7uchet"#;
-    const RES01:u32 = 142;
-    const INP1:&str = "../../input1";
-    const RES1:u32 = 55816;
+    const RES01: u32 = 142;
+    const INP1: &str = "../../input1";
+    const RES1: u32 = 55816;
     #[test]
     fn digit_inp01() {
         let result = compute(0, INP01);
@@ -81,16 +83,16 @@ mod tests {
         let result = compute(1, "gtkjtwo1gfnk6one7zxthreeljdst");
         assert_eq!(23, result);
     }
-    const INP02:&str = r#"two1nine
+    const INP02: &str = r#"two1nine
         eightwothree
         abcone2threexyz
         xtwone3four
         4nineeightseven2
         zoneight234
         7pqrstsixteen"#;
-    const RES02:u32 = 281;
-    const INP2:&str = "../../input1";
-    const RES2:u32 = 54980;
+    const RES02: u32 = 281;
+    const INP2: &str = "../../input1";
+    const RES2: u32 = 54980;
     #[test]
     fn part2_inp01() {
         let result = compute(1, INP02);
