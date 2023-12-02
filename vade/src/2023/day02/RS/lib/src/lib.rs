@@ -3,26 +3,18 @@ mod tests {
     fn parse(games: Vec<&str>) -> Vec<Vec<(u32, u32, u32)>> {
         let mut res = Vec::new();
         for (_i, s) in games.iter().enumerate() {
-            //println!("i={} s={}", i, s);
             let v1: Vec<&str> = s.split(':').collect();
             let v2: Vec<&str> = v1[0].split(' ').collect();
             let _game = v2[1].parse::<u32>().unwrap();
-            //println!("game {}", game);
             let v3: Vec<&str> = v1[1].split(';').collect();
             let mut res0 = Vec::new();
             for (_j, rgb) in v3.iter().enumerate() {
                 let v4: Vec<&str> = rgb.split(',').collect();
-                //println!("j={}:", j);
                 let mut rgb0: (u32, u32, u32) = (0, 0, 0);
                 for comp in v4 {
                     let v5: Vec<&str> = comp.split(' ').collect();
-                    //let q=v5[0].parse::<u32>().unwrap();
                     let q = v5[1].parse::<u32>().unwrap();
                     let col = v5[2];
-                    //println!("q={} col={}", q, col);
-                    /*if col=="red" {
-                        rgb0.0=q;
-                    } else if col=="red" {*/
                     match col {
                         "red" => rgb0.0 = q,
                         "green" => rgb0.1 = q,
@@ -50,6 +42,21 @@ mod tests {
                 if possible {
                     res += i as u32 + 1
                 }
+            } else {
+                let mut rgb0: (u32, u32, u32) = (0, 0, 0);
+                for &(r, g, b) in vec {
+                    if r > rgb0.0 {
+                        rgb0.0 = r
+                    }
+                    if g > rgb0.1 {
+                        rgb0.1 = g
+                    }
+                    if b > rgb0.2 {
+                        rgb0.2 = b
+                    }
+                }
+                let res0 = rgb0.0 * rgb0.1 * rgb0.2;
+                res += res0;
             }
         }
         res
@@ -62,6 +69,20 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"#;
     const RES01: u32 = 8;
     const INP1: &str = "../../input1";
     const RES1: u32 = 3035;
+    const RES02: u32 = 2286;
+    const RES2: u32 = 66027;
+    #[test]
+    fn part2_parse002() {
+        let result = compute(1, (12, 13, 14), parse(INP01.lines().collect()));
+        assert_eq!(RES02, result);
+    }
+    #[test]
+    fn part2_parse003() {
+        use std::fs;
+        let string = &fs::read_to_string(INP1).unwrap();
+        let result = compute(1, (12, 13, 14), parse(string.lines().collect()));
+        assert_eq!(RES2, result);
+    }
     #[test]
     fn part1_parse000() {
         let result = parse(vec![
@@ -92,7 +113,6 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"#;
     fn part1_parse003() {
         use std::fs;
         let string = &fs::read_to_string(INP1).unwrap();
-        //println!("string={}", string);
         let result = compute(0, (12, 13, 14), parse(string.lines().collect()));
         assert_eq!(RES1, result);
     }
