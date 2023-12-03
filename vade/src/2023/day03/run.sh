@@ -1,1 +1,1 @@
-cargo test
+clear;cargo test
