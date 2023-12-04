@@ -31,19 +31,16 @@ def parse(inp:str)->dict:
     return d
 def compute(s):
     d=parse(s)
-    #print(f"d={d}")
     res={}
     for e in d:
         if e not in res:
             res[e]=0
         res[e]+=1
         n=res[e]
-        #print(f"e={e} n={n}")
         for c in d[e]:
             if c not in res:
                 res[c]=0
             res[c]+=n
-            #print(f" c={c} n={n}")
     return sum(res.values())
 res=compute(s)
 print(f"res={res}")
