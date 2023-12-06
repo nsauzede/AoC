@@ -1,2 +1,2 @@
-#clear;cargo test
+clear;cargo test
 pytest _test.py
