@@ -32,7 +32,5 @@ class T000(unittest.TestCase):
         self.assertEqual(RES02,compute(INP02))
     def test_0100(self):
         self.assertEqual(RES01,compute(INP01))
-    def test_0101(self):
-        self.assertEqual(RES01,compute(INP01))
     def test_1000(self):
         self.assertEqual(RES1,compute(INP1))
