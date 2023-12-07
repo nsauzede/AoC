@@ -15,48 +15,29 @@ RES01=6440
 #RES1=250386150 # too high
 RES1=250347426
 RES02=5905
+RES2=251224870
 HIGH='HIGH';ONE='ONE';TWO='TWO';THREE='THREE';FULL='FULL';FOUR='FOUR';FIVE='FIVE'
 A='A';K='K';Q='Q';J='J';T='T'
 VALS=['2','3','4','5','6','7','8','9',T,J,Q,K,A]
 VALS2=[J,'2','3','4','5','6','7','8','9',T,Q,K,A]
 def get_type(hand,part=0):
-    if part==0:
-        return get_type0(hand)
+    d={}
+    nj=0
+    for c in hand:
+        if part==1 and c==J:
+            nj+=1
+            continue
+        if c in d:
+            d[c]+=1
+        else:
+            d[c]=1
+    v=sorted(d.values())
+    print(f"v={v} d={d}")
+    if len(v)>0:
+        v[-1]+=nj
+        print(f"v={v} d={d}")
     else:
-        return get_type1(hand)
-def get_type1(hand):
-    d={}
-    for c in hand:
-        if c in d:
-            d[c]+=1
-        else:
-            d[c]=1
-    v=sorted(d.values())
-    print(f"v={v} d={d}")
-    if v==[1,1,1,1,1]:
-        return HIGH
-    elif v==[1,1,1,2]:
-        return ONE
-    elif v==[1,2,2]:
-        return TWO
-    elif v==[1,1,3]:
-        return THREE
-    elif v==[1,4]:
-        return FOUR
-    elif v==[2,3]:
-        return FULL
-    elif v==[5]:
-        return FIVE
-    else:0/0
-def get_type0(hand):
-    d={}
-    for c in hand:
-        if c in d:
-            d[c]+=1
-        else:
-            d[c]=1
-    v=sorted(d.values())
-    print(f"v={v} d={d}")
+        v=[5]
     if v==[1,1,1,1,1]:
         return HIGH
     elif v==[1,1,1,2]:
@@ -159,5 +140,7 @@ class T000(unittest.TestCase):
         self.assertEqual(RES01+0,compute(parse(INP01)))
     def test_1000(self):
         self.assertEqual(RES1,compute(parse(open("input1","rt").read())))
-    def Ztest_0200(self):
+    def test_0200(self):
         self.assertEqual(RES02+0,compute(INP01_,1))
+    def test_2000(self):
+        self.assertEqual(RES2+0,compute(parse(open("input1","rt").read()),1))
