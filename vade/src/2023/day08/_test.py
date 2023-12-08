@@ -16,9 +16,44 @@ BBB = (AAA, ZZZ)
 ZZZ = (ZZZ, ZZZ)"""
 RES01_=6
 RES1=21251
-RES02=0
+INP02="""LR
+
+11A = (11B, XXX)
+11B = (XXX, 11Z)
+11Z = (11B, XXX)
+22A = (22B, XXX)
+22B = (22C, 22C)
+22C = (22Z, 22Z)
+22Z = (22B, 22B)
+XXX = (XXX, XXX)"""
+RES02=6
 RES2=0
 def compute(inp:dict,part=0)->int:
+    if part==0:return compute0(inp,part)
+    else:return compute1(inp,part)
+def compute1(inp:dict,part=0)->int:
+    res = 0
+    steps=inp['steps']
+    print(f"steps={steps}")
+    nxt=[s for s in inp.keys() if s.endswith('A')]
+    i = 0
+    #while not all(s.endswith('Z') for s in nxt) and i<100000000:
+    while not all(s.endswith('Z') for s in nxt):
+        #print(f"i={i} nxt={nxt}")
+        c=steps[i%len(steps)]
+        nxt0=[]
+        for n in nxt:
+            l,r=inp[n]
+            if c=='L':
+                nxt0+=[l]
+            else:
+                nxt0+=[r]
+        nxt=nxt0
+        #print(f"nxt={nxt}")
+        i+=1
+    res=i
+    return res
+def compute0(inp:dict,part=0)->int:
     res = 0
     steps=inp['steps']
     print(f"steps={steps}")
@@ -55,7 +90,7 @@ class T000(unittest.TestCase):
         self.assertEqual(RES01_+0,compute(parse(INP01_)))
     def test_1000(self):
         self.assertEqual(RES1,compute(parse(open("input1","rt").read())))
-    def Ztest_0200(self):
-        self.assertEqual(RES02+0,compute(INP01_,1))
+    def test_0200(self):
+        self.assertEqual(RES02+0,compute(parse(INP02),1))
     def Ztest_2000(self):
         self.assertEqual(RES2+0,compute(parse(open("input1","rt").read()),1))
