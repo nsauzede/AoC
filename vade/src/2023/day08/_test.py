@@ -27,7 +27,7 @@ INP02="""LR
 22Z = (22B, 22B)
 XXX = (XXX, XXX)"""
 RES02=6
-RES2=0
+RES2=11678319315857
 def compute(inp:dict,part=0)->int:
     if part==0:return compute0(inp,part)
     else:return compute1(inp,part)
@@ -35,23 +35,23 @@ def compute1(inp:dict,part=0)->int:
     res = 0
     steps=inp['steps']
     print(f"steps={steps}")
-    nxt=[s for s in inp.keys() if s.endswith('A')]
-    i = 0
-    #while not all(s.endswith('Z') for s in nxt) and i<100000000:
-    while not all(s.endswith('Z') for s in nxt):
-        #print(f"i={i} nxt={nxt}")
-        c=steps[i%len(steps)]
-        nxt0=[]
-        for n in nxt:
-            l,r=inp[n]
+    nxts=[s for s in inp.keys() if s.endswith('A')]
+    ii=[]
+    # find the LCM between all A=>Z paths cycle lengths
+    for nxt in nxts:
+        i = 0
+        while not nxt.endswith('Z'):
+            c=steps[i%len(steps)]
+            l,r=inp[nxt]
+            #print(f"i={i} nxt={nxt} l={l} r={r}")
             if c=='L':
-                nxt0+=[l]
+                nxt=l
             else:
-                nxt0+=[r]
-        nxt=nxt0
-        #print(f"nxt={nxt}")
-        i+=1
-    res=i
+                nxt=r
+            i+=1
+        ii+=[i]
+    from math import lcm
+    res=lcm(*ii)
     return res
 def compute0(inp:dict,part=0)->int:
     res = 0
@@ -81,7 +81,7 @@ def parse(inp):
         l,r=ll[i].split('=')
         nxt=l
         res[nxt]=r.split(",")
-    print(f"res={res}")
+    #print(f"res={res}")
     return res
 class T000(unittest.TestCase):
     def test_0100(self):
@@ -92,5 +92,5 @@ class T000(unittest.TestCase):
         self.assertEqual(RES1,compute(parse(open("input1","rt").read())))
     def test_0200(self):
         self.assertEqual(RES02+0,compute(parse(INP02),1))
-    def Ztest_2000(self):
+    def test_2000(self):
         self.assertEqual(RES2+0,compute(parse(open("input1","rt").read()),1))
