@@ -67,7 +67,7 @@ RES023=10
 #RES2=88 # not right
 #RES2=97 # not right
 #RES2=29 # not right
-RES2=0
+RES2=415
 def getstart(m):
     for j,l in enumerate(m):
         if 'S'in l:
@@ -210,7 +210,7 @@ def disp(inp):
     for r in inp:
         s="".join(r)
         print(s)
-def color(m,j,i,col):
+def color(m,j,i,col,path0=None):
     h=len(m)
     w=len(m[0])
     if j<0 or j>=h:return
@@ -219,21 +219,28 @@ def color(m,j,i,col):
         if m[j][i]=='A':
             pass
             #die(1)
-        if m[j][i]=='B':die(2)
-        if m[j][i]=='.':
+        elif m[j][i]=='B':die(2)
+        elif m[j][i]=='.':
             m[j][i]=col
             #return
-            color(m,j,i-1,col)
-            color(m,j,i+1,col)
-            color(m,j-1,i,col)
-            color(m,j+1,i,col)
+            color(m,j,i-1,col,path0)
+            color(m,j,i+1,col,path0)
+            color(m,j-1,i,col,path0)
+            color(m,j+1,i,col,path0)
             #print(f"j={j} i={i} col={col}")
+        elif path0 and [j,i]not in path0:
+            #print(f"FILLING ALSO {[j,i]} path0={path0}")
+            m[j][i]=col
+            color(m,j,i-1,col,path0)
+            color(m,j,i+1,col,path0)
+            color(m,j-1,i,col,path0)
+            color(m,j+1,i,col,path0)
     else:
         if m[j][i]=='B':
             pass
             #die(3)
-        if m[j][i]=='A':die(4)
-        if m[j][i]=='.':
+        elif m[j][i]=='A':die(4)
+        elif m[j][i]=='.':
             m[j][i]=col
             #return
             color(m,j,i-1,col)
@@ -241,7 +248,7 @@ def color(m,j,i,col):
             color(m,j-1,i,col)
             color(m,j+1,i,col)
             #print(f"j={j} i={i} col={col}")
-def flood(inp,d,path,inv=False):
+def flood(inp,d,path,inv=False,path0=None):
     if inv:
         A='B';B='A'
     else:
@@ -253,53 +260,54 @@ def flood(inp,d,path,inv=False):
         lj,li=last
         j,i=nxt
         c=inp[j][i]
-        print(f"flooding last={last} nxt={nxt} c={c}")
+        #print(f"flooding last={last} nxt={nxt} c={c}")
         if c=='-':
             if li<i:
                 #print("HORIZ EAST")
-                color(inp,j-1,i,A)
-                color(inp,j+1,i,B)
+                color(inp,j-1,i,A,path0)
+                color(inp,j+1,i,B,path0)
             else:
                 #print("HORIZ WEST")
-                color(inp,j-1,i,B)
-                color(inp,j+1,i,A)
+                color(inp,j-1,i,B,path0)
+                color(inp,j+1,i,A,path0)
         elif c=='|':
             if lj<j:
                 #print("VERT SOUTH")
-                color(inp,j,i+1,A)
-                color(inp,j,i-1,B)
+                color(inp,j,i+1,A,path0)
+                color(inp,j,i-1,B,path0)
             else:
                 #print("VERT NORTH")
-                color(inp,j,i+1,B)
-                color(inp,j,i-1,A)
+                color(inp,j,i+1,B,path0)
+                color(inp,j,i-1,A,path0)
         elif c=='7':
             if li<i:
-                color(inp,j-1,i,A)
-                color(inp,j,i+1,A)
+                color(inp,j-1,i,A,path0)
+                color(inp,j,i+1,A,path0)
             else:
-                color(inp,j-1,i,B)
-                color(inp,j,i+1,B)
+                color(inp,j-1,i,B,path0)
+                color(inp,j,i+1,B,path0)
         elif c=='J':
             if lj<j:
-                color(inp,j+1,i,A)
-                color(inp,j,i+1,A)
+                color(inp,j+1,i,A,path0)
+                color(inp,j,i+1,A,path0)
             else:
-                color(inp,j+1,i,B)
-                color(inp,j,i+1,B)
+                color(inp,j+1,i,B,path0)
+                color(inp,j,i+1,B,path0)
         elif c=='L':
             if li>i:
-                color(inp,j+1,i,A)
-                color(inp,j,i-1,A)
+                color(inp,j+1,i,A,path0)
+                color(inp,j,i-1,A,path0)
             else:
-                color(inp,j+1,i,B)
-                color(inp,j,i-1,B)
+                color(inp,j+1,i,B,path0)
+                color(inp,j,i-1,B,path0)
         elif c=='F':
             if lj>j:
-                color(inp,j-1,i,A)
-                color(inp,j,i-1,A)
+                color(inp,j-1,i,A,path0)
+                color(inp,j,i-1,A,path0)
+                pass
             else:
-                color(inp,j-1,i,B)
-                color(inp,j,i-1,B)
+                color(inp,j-1,i,B,path0)
+                color(inp,j,i-1,B,path0)
         else:die(f"c")
         last=nxt
     print("FLOOD RESULT: ---------------------------------------------------")
@@ -309,8 +317,10 @@ def compute(inp:list,part=0,cnt='B')->int:
     if part==1:
         #print(f"path1={res['path1']}")
         #print(f"path2={res['path2']}")
-        flood(inp,res,res['path1'])
-        flood(inp,res,res['path2'],True)
+        path0=res['path1']+res['path2']
+        print(f"path0={path0}")
+        flood(inp,res,res['path1'],inv=False,path0=path0)
+        flood(inp,res,res['path2'],inv=True,path0=path0)
         res=0
         for r in inp:
             res+=r.count(cnt)
@@ -344,7 +354,7 @@ class T000(unittest.TestCase):
         self.assertEqual(RES021+0,compute(parse(INP021),1))
     def test_0220(self):
         self.assertEqual(RES022+0,compute(parse(INP022),1,'A'))
-    def Ztest_0230(self):
+    def test_0230(self):
         self.assertEqual(RES023+0,compute(parse(INP023),1,'A'))
-    def Ztest_2000(self):
-        self.assertEqual(RES2+0,compute(parse(open("input1","rt").read()),1))
+    def test_2000(self):
+        self.assertEqual(RES2+0,compute(parse(open("input1","rt").read()),1,'A'))
