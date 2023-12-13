@@ -74,8 +74,6 @@ Find the line of reflection in each of the patterns in your notes. *What number 
 
 Your puzzle answer was `33195`.
 
-The first half of this puzzle is complete! It provides one gold star: \*
-
 \--- Part Two ---
 ----------
 
@@ -140,8 +138,12 @@ Summarize your notes as before, but instead use the new different reflection lin
 
 In each pattern, fix the smudge and find the different line of reflection. *What number do you get after summarizing the new reflection line in each pattern in your notes?*
 
-Answer:
+Your puzzle answer was `31836`.
 
-Although it hasn't changed, you can still [get your puzzle input](13/input).
+Both parts of this puzzle are complete! They provide two gold stars: \*\*
 
-You can also [Shareon [Twitter](https://twitter.com/intent/tweet?text=I%27ve+completed+Part+One+of+%22Point+of+Incidence%22+%2D+Day+13+%2D+Advent+of+Code+2023&url=https%3A%2F%2Fadventofcode%2Ecom%2F2023%2Fday%2F13&related=ericwastl&hashtags=AdventOfCode) [Mastodon](javascript:void(0);)] this puzzle.
+At this point, you should [return to your Advent calendar](/2023) and try another puzzle.
+
+If you still want to see it, you can [get your puzzle input](13/input).
+
+You can also [Shareon [Twitter](https://twitter.com/intent/tweet?text=I%27ve+completed+%22Point+of+Incidence%22+%2D+Day+13+%2D+Advent+of+Code+2023&url=https%3A%2F%2Fadventofcode%2Ecom%2F2023%2Fday%2F13&related=ericwastl&hashtags=AdventOfCode) [Mastodon](javascript:void(0);)] this puzzle.
