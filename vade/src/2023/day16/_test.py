@@ -13,8 +13,8 @@ INP01=r""".|...\....
 RES01=46
 #RES1=5688 # too low
 RES1=6816
-RES02=0
-RES2=0
+RES02=51
+RES2=8163
 N='.';R='>';D='v';L='<';U='^';
 def walk(seen,m,h,w,j,i,d,nest=0,cnt=0)->int:
     while True:
@@ -62,22 +62,66 @@ def walk(seen,m,h,w,j,i,d,nest=0,cnt=0)->int:
             elif d==L:d=D
             elif d==U:d=R
         cnt+=1
-def compute(m0:list,part=0)->int:
-    res=0
-    h=len(m0)
-    w=len(m0[0])
-    #m=mkmat([('.',0)]*w,h)
-    disp(m0,"INITIAL")
-    m=m0
-    seen={}
-    walk(seen,m,h,w,0,-1,R)
-    disp(m,"FINAL")
+def total(m,h,w):
     res=0
     for y in range(h):
         for x in range(w):
             #print(f"{y} {x}: {m[y][x]}")
             if m[y][x][1]>0:
                 res+=1
+    return res
+def compute(m0:list,part=0)->int:
+    res=0
+    h=len(m0)
+    w=len(m0[0])
+    #m=mkmat([('.',0)]*w,h)
+    #disp(m0,"INITIAL")
+    m=m0
+    seen={}
+    if part==0:
+        walk(seen,m,h,w,0,-1,R)
+        res=total(m,h,w)
+    else:
+        res=0
+        i0=-1
+        for i in range(w):
+            import copy
+            seen={}
+            m=copy.deepcopy(m0)
+            walk(seen,m,h,w,-1,i,D)
+            res0=total(m,h,w)
+            #print(f"i={i} res={res}")
+            if res0>res:
+                i0=i
+                res=res0
+            seen={}
+            m=copy.deepcopy(m0)
+            walk(seen,m,h,w,h,i,U)
+            res0=total(m,h,w)
+            #print(f"i={i} res={res}")
+            if res0>res:
+                i0=i
+                res=res0
+        for j in range(h):
+            import copy
+            seen={}
+            m=copy.deepcopy(m0)
+            walk(seen,m,h,w,j,-1,R)
+            res0=total(m,h,w)
+            #print(f"i={i} res={res}")
+            if res0>res:
+                i0=i
+                res=res0
+            seen={}
+            m=copy.deepcopy(m0)
+            walk(seen,m,h,w,w,i,L)
+            res0=total(m,h,w)
+            #print(f"i={i} res={res}")
+            if res0>res:
+                i0=i
+                res=res0
+        #print(f"max for i0={i0}")
+    #disp(m,"FINAL")
     return res
 def parse(inp:str,part=0)->list:
     res=[]
@@ -132,7 +176,7 @@ class T000(unittest.TestCase):
         self.assertEqual(RES01+0,compute(parse(INP01)))
     def test_1000(self):
         self.assertEqual(RES1+0,compute(parse(open("input1","rt").read())))
-    def Ztest_0200(self):
+    def test_0200(self):
         self.assertEqual(RES02+0*1000,compute(parse(INP01),part=1))
-    def Ztest_2000(self):
+    def test_2000(self):
         self.assertEqual(RES2+0*1000,compute(parse(open("input1","rt").read()),part=1))
