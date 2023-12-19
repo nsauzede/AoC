@@ -16,6 +16,7 @@ INP01_1=[["???.###",[ 1,1,3]],
 ]
 RES01=21
 RES1=7599
+RES02=525152
 RES2=0
 def compute(inp:list,part=0)->int:
     res = 0
@@ -97,7 +98,7 @@ def pregen(s:str, mult=5)->str:
     print(f"l={l} r={r}")
     return " ".join(["?".join([l]*mult),",".join([r]*mult)])
 def filt(s0:str, groups:list)->str:
-    print(f"s0={s0} groups={groups}")
+    #print(f"s0={s0} groups={groups}")
     if s0=="??????##?#?" and groups==[6,1]:
         print("CHEAT!!!")
         return "..######.#."
@@ -125,6 +126,7 @@ def filt(s0:str, groups:list)->str:
             i+=1
         break
     #print(f"returning {s}")
+    print(f"s0:{s0}=>{s} groups={groups}")
     return s
 class T000(unittest.TestCase):
     def test_filt_000(self): # long but OK
@@ -317,8 +319,13 @@ F
         self.assertEqual(RES01+0,compute(INP01_1))
     def Ztest_0100(self):
         self.assertEqual(RES01+0,compute(parse(INP01)))
-    def Ztest_1000(self):
+    def test_1000(self):       # passes, but very slow
         self.assertEqual(RES1+0,compute(parse(open("input1","rt").read())))
+    def Ztest_0200(self):
+        #self.assertEqual(RES02+1,compute(parse(INP01,1,mult=1))) # 5
+        #self.assertEqual(RES02+1,compute(parse(INP01,1,mult=2))) # 9
+        self.assertEqual(RES02+1,compute(parse(INP01,1,mult=3))) # 
+        #self.assertEqual(RES02+1,compute(parse(INP01,1,mult=5))) # 
     def Ztest_2000(self):
         #self.assertEqual(RES2+0,compute(parse(open("input1","rt").read(),1)))
         #self.assertEqual(RES2+0,compute(parse(open("input1","rt").read(),1,mult=1)))    # 7599
