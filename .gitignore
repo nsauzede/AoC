@@ -1,4 +1,5 @@
 vade/target
 __pycache__
+.pytest_cache
 Cargo.lock
 target
